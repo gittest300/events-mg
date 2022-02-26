@@ -1,0 +1,201 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Events Template
+{% endblock %}
+{% block content %}
+  
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+      <section class="py-0">
+        <div class="container mt-7" style="font-size: 12px;">
+            {% if event_list %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-2 mb-2">
+                        <div class="form-group">
+                            <Label>Select Category</Label>
+                            <select name="category" id="" class="form-select" style="font-size: 12px; padding-left: 5px;">
+                                <option value="0">None</option>
+                                {% if category %}
+                                <option value="{{category.category_id}}" selected="selected">{{category.category_name}}</option>
+                                {% endif %}
+                                {% for each in categories %}
+                                    <option value="{{each.category_id}}">{{each.category_name}}</option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-2 mb-2">
+                        <div class="form-group">
+                            <Label>Start Date</Label>
+                            <input type="date" name="start_date" id="" class="form-control" style="font-size: 12px; padding-left: 5px;" value="{{start_date}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-2 mb-2">
+                        <div class="form-group">
+                            <Label>End Date</Label>
+                            <input type="date" name="end_date" id="" class="form-control" style="font-size: 12px; padding-left: 5px;" value="{{end_date}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 mb-2">
+                        <div class="form-group">
+                            <Label>Search Keyword</Label>
+                            <input type="text" name="keyword" id="" placeholder="search events here.." class="form-control" style="font-size: 12px; padding-left: 5px;" value="{{keyword}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-1 text-center">
+                        <div class="form-group">
+                            <label for="">&nbsp;</label>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-info" style="font-size: 12px;">
+                                   <span class="d-flex">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                                        <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                                      </svg>
+                                      <span style="margin-left: 5px; !important">
+                                        Filter
+                                      </span>
+                                       
+                                   </span>
+                                </button>
+                            <button class="btn btn-outline-danger" style="font-size: 12px;">
+                                <span class="d-flex">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                      </svg>
+                                      <span style="margin-left: 5px; !important">
+                                        <a href="{% url 'events' %}">Reset</a>
+                                      </span>
+                                </span>
+                                
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+        <div class="container">
+          <div class="row h-100">
+            <div class="col-lg-7 mx-auto text-center mb-5">
+              <!-- <h5 class="fw-bold fs-3 fs-lg-5 lh-sm">Best Events</h5> -->
+            </div>
+            <div class="col-12">
+                <hr>
+              <div class="row align-items-center g-2">
+                <div class="row">
+                  {% if event_list %}
+                  {% for each in event_list %}
+                  <div class="col-sm-6 col-md-4 mb-3 mb-md-0 p-2">
+                    <div class="card card-span text-white">
+                      <div class="container1" style="width: 100%;">
+                          <img class="img-fluid  image" src="{{each.image}}" alt="..." style="height: 200px;"/>
+                          <div class="middle">
+                            <div class="text">
+                                <div class="btn-group">
+                                  <a href="#" title="Like">
+                                    <span style="color: red;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                          </svg>
+                                    </span>
+                                  </a>
+                                  <a href="#" title="Add To Cart">
+                                    <span class="text-primary">
+                                      <svg class="feather feather-shopping-cart me-3" xmlns="http://www.w3.org/2000/svg" width="45" height="45"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                      </svg>
+                                    </span>
+                                  </a>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      <div class="card-body bg-200" >
+                        <h5 class="fw-bold text-1000 text-truncate">
+                          {% if each.is_paid %}
+                          <span class="text-primary">10 $</span>
+                          {% else %}
+                          <span class="text-primary">free</span>
+                          {% endif %}
+                          
+                        </h5>
+                        <h5 class="fw-bold text-1000 text-truncate">{{each.title}}</h5>
+                        <h6 class="fw-bold text-1000 text-truncate">
+                          <!-- H:i P -->
+                          Start Date: {{each.start_date|date:'d/m/Y'}}
+                        </h6>
+                        <h6 class="fw-bold text-1000 text-truncate">
+                          <!-- H:i P -->
+                          End Date: {{each.end_date|date:'d/m/Y'}}
+                        </h6>
+                        <div class="fw-bold" style="font-size: 12px; height: 160px; overflow: hidden;"><span class="text-800 me-2" >{{each.description}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  <div class="col-12">
+                      <span class="step-links d-flex" style="float: right;">
+                          {% if event_list.has_previous %}
+                          <li class="pagination page-item">
+                              <a class="page-link" href="?page=1">&laquo; first</a>
+                          </li>
+                              
+                              <li class="pagination page-item">
+                                  <a class="page-link" href="?page={{ event_list.previous_page_number }}">previous</a>
+                              </li>
+                              
+                          {% endif %}
+                          <li class="pagination page-item">
+                              <span class="page-link">
+                                  Page {{ event_list.number }} of {{ event_list.paginator.num_pages }}.
+                              </span>
+                          </li>
+                          
+                  
+                          {% if event_list.has_next %}
+                          <li class="pagination page-item">
+                              <a class="page-link" href="?page={{ event_list.next_page_number }}">next</a>
+                          </li>
+                          <li class="pagination page-item">
+                              
+                              <a class="page-link" href="?page={{ event_list.paginator.num_pages }}">last &raquo;</a>
+                          </li>
+                          {% endif %}
+                      </span>
+                  </div>
+                  {% else %}
+                  <div class="col-lg-7 mx-auto text-center mb-5">
+                      <h5 class="fw-bold fs-3 fs-lg-5 lh-sm">No Events Found !</h5>
+                      <!-- <div class="col-12 d-flex justify-content-center mt-5"> <a class="btn btn-lg btn-dark" href="{% url 'events_list' %}">Back To Filter</a></div> -->
+                    </div>
+                  {% endif %}
+                </div>
+                 
+                <div class="col-12 text-center">
+                    <div class="col-12 d-flex justify-content-center mt-5"> <a class="btn btn-lg btn-dark" href="{% url 'home' %}">Back To Home</a></div>
+                  </div>
+                
+              </div>
+            </div>
+            
+            </div>
+          </div>
+        </div>
+        <!-- end of .container-->
+  
+      </section>
+      <!-- <section> close ============================-->
+      <!-- ============================================-->
+  
+{% endblock %}
